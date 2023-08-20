@@ -105,32 +105,32 @@ export const CountryPicker = ({
         }
     }, [show]);
 
-    React.useEffect(() => {
-        if (
-            enableModalAvoiding &&
-            (
-                keyboardStatus.keyboardPlatform === 'ios' ||
-                (keyboardStatus.keyboardPlatform === 'android' &&
-                    androidWindowSoftInputMode === 'pan')
-            )
-        ) {
-            if (keyboardStatus.isOpen)
-                Animated.timing(animatedMargin, {
-                    toValue: keyboardStatus.keyboardHeight,
-                    duration: 190,
-                    easing: Easing.ease,
-                    useNativeDriver: false,
-                }).start();
+    // React.useEffect(() => {
+    //     if (
+    //         enableModalAvoiding &&
+    //         (
+    //             keyboardStatus.keyboardPlatform === 'ios' ||
+    //             (keyboardStatus.keyboardPlatform === 'android' &&
+    //                 androidWindowSoftInputMode === 'pan')
+    //         )
+    //     ) {
+    //         if (keyboardStatus.isOpen)
+    //             Animated.timing(animatedMargin, {
+    //                 toValue: keyboardStatus.keyboardHeight,
+    //                 duration: 190,
+    //                 easing: Easing.ease,
+    //                 useNativeDriver: false,
+    //             }).start();
 
-            if (!keyboardStatus.isOpen)
-                Animated.timing(animatedMargin, {
-                    toValue: 0,
-                    duration: 190,
-                    easing: Easing.ease,
-                    useNativeDriver: false,
-                }).start();
-        }
-    }, [keyboardStatus.isOpen]);
+    //         if (!keyboardStatus.isOpen)
+    //             Animated.timing(animatedMargin, {
+    //                 toValue: 0,
+    //                 duration: 190,
+    //                 easing: Easing.ease,
+    //                 useNativeDriver: false,
+    //             }).start();
+    //     }
+    // }, [keyboardStatus.isOpen]);
 
     const preparedPopularCountries = React.useMemo(() => {
         return filteredCodes?.filter(country => {
@@ -178,7 +178,7 @@ export const CountryPicker = ({
     const openModal = () => {
         Animated.timing(animationDriver, {
             toValue: 1,
-            duration: 400,
+            duration: 200,
             useNativeDriver: true,
         }).start();
     };
@@ -186,7 +186,7 @@ export const CountryPicker = ({
     const closeModal = () => {
         Animated.timing(animationDriver, {
             toValue: 0,
-            duration: 400,
+            duration: 200,
             useNativeDriver: true,
         }).start(() => setShowModal(false));
     };
@@ -221,11 +221,12 @@ export const CountryPicker = ({
             visible={showModal}
             onShow={openModal}
             onRequestClose={onRequestClose}
+            style={styles.container}
         >
             <View
                 style={{
-                    flex: 1,
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
+                    height: height,
                 }}
             >
                 {!disableBackdrop && (
@@ -313,7 +314,7 @@ export const CountryPicker = ({
                         />
                     )}
                 </Animated.View>
-                <Animated.View
+                {/* <Animated.View
                     style={[
                         styles.modalInner,
                         style?.modalInner,
@@ -321,7 +322,7 @@ export const CountryPicker = ({
                             height: animatedMargin,
                         },
                     ]}
-                />
+                /> */}
             </View>
         </Modal>
     )
@@ -437,12 +438,6 @@ type StyleKeys = 'container' | 'modal' | 'modalInner' | 'searchBar' | 'countryMe
 const styles: { [key in StyleKeys]: ViewStyle } = {
     container: {
         flex: 1,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        justifyContent: 'flex-end',
     },
     modal: {
         backgroundColor: 'white',
@@ -457,6 +452,7 @@ const styles: { [key in StyleKeys]: ViewStyle } = {
             width: 0,
             height: 6,
         },
+        position: 'absolute',
         bottom: 0,
         zIndex: 10,
         shadowOpacity: 0.37,
