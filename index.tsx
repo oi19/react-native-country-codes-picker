@@ -151,7 +151,7 @@ export const CountryPicker = ({
     }, [showOnly, excludedCountries]);
 
     const resultCountries = React.useMemo(() => {
-        const lowerSearchValue = searchValue.toLowerCase();
+        const lowerSearchValue = searchValue.toLowerCase().trim();
 
         return codes.filter((country) => {
             if (country?.dial_code.includes(searchValue) ||
@@ -267,7 +267,7 @@ export const CountryPicker = ({
                         <TextInput
                             style={[styles.searchBar, style?.textInput]}
                             value={searchValue}
-                            onChangeText={setSearchValue}
+                            onChangeText={(text) => setSearchValue(text)}
                             placeholder={inputPlaceholder || 'Search your country'}
                             placeholderTextColor={inputPlaceholderTextColor || '#8c8c8c'}
                             {...rest}
